@@ -6,7 +6,7 @@ from fastapi.responses import JSONResponse
 from worker.tasks import TaskWorker
 from models.gen_models import GenerationResponse
 from server import UvicornServer
-from generates import get_seedance_video, get_kling_video
+from generates import get_seedance_video, get_kling_video, get_sora_video
 
 
 # Создаём приложение
@@ -24,6 +24,9 @@ async def generate(request: GenerationResponse):
         image = request.image_url
         if model == 'kling':
             func = get_kling_video
+            args = [prompt, request.duration, request.aspect_ratio, image]
+        elif model == 'sora':
+            func = get_sora_video
             args = [prompt, request.duration, request.aspect_ratio, image]
         else:
             func = get_seedance_video

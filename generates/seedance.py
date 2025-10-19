@@ -41,3 +41,6 @@ async def get_seedance_video(prompt: str, model: Literal['seedance_pro', 'seedan
             return prediction.output
         await asyncio.sleep(4)
         prediction = await client.predictions.async_get(prediction_id)
+
+
+print(asyncio.run(get_seedance_video('Сделай видео ходящей по луне собаки', 'seedance_lite', 5, '16:9')))
