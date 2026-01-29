@@ -17,7 +17,7 @@ headers = {
 
 
 async def _poll_generation(task_id: str):
-    url = f'https://api.unifically.com/sora-2/status/{task_id}'
+    url = f'https://api.unifically.com/v1/tasks/{task_id}'
     async with aiohttp.ClientSession() as client:
         while True:
             async with client.get(url, headers=headers) as response:
@@ -32,13 +32,15 @@ async def _poll_generation(task_id: str):
                 await asyncio.sleep(4)
 
 
-async def get_sora_video(prompt: str, duration: Literal[4, 8, 12], sizes: Literal["16:9", "9:16"], image: str | None = None):
-    url = 'https://api.unifically.com/sora-2/generate'
+async def get_sora_video(prompt: str, duration: Literal[5, 10, 15], sizes: Literal["16:9", "9:16"], image: str | None = None):
+    url = 'https://api.unifically.com/v1/tasks'
     data = {
-        "model": "2.1-master",
-        "prompt": prompt,
-        "duration": duration,
-        "aspect_ratio": sizes
+        "model": "openai/sora-2",
+        "input": {
+            "prompt": prompt,
+            "duration": duration,
+            "aspect_ratio": sizes
+        }
     }
     if image:
         data['image_url'] = image
@@ -55,4 +57,4 @@ async def get_sora_video(prompt: str, duration: Literal[4, 8, 12], sizes: Litera
     return await _poll_generation(task_id)
 
 
-#print(asyncio.run(get_sora_video('Сделай бегущего мультяшного человечка', 'sora-2-pro', 12, "16:9")))
+#print(asyncio.run(get_sora_video('Сделай бегущего мультяшного человечка', 15, "16:9")))
