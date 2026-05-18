@@ -57,7 +57,7 @@ async def root():
 
 
 if __name__ == '__main__':
-    server = UvicornServer(app, host="127.0.0.1", port=8000)
+    server = UvicornServer(app, host="127.0.0.1", port=8001)
     try:
         server.start()
     except KeyboardInterrupt as err:
